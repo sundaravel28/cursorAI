@@ -1,13 +1,10 @@
-name: CI
+name: CI Server Only
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  test:
+  start-server:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,13 +23,21 @@ jobs:
         run: chmod +x ./node_modules/.bin/jest
 
       - name: Start MCP server
-        run: node mcpServer.js
+        run: node mcpServer.js &
 
-      - name: Run tests
-        run: npm test
+      - name: Wait for MCP server to be ready
+        run: |
+          for i in {1..20}; do
+            if curl -s http://localhost:3000/; then
+              echo "MCP server is up!"
+              break
+            fi
+            echo "Waiting for MCP server..."
+            sleep 1
+          done
 
-      - name: Upload test report
-        uses: actions/upload-artifact@v4
+      - name: Trigger CI Test Workflow
+        uses: peter-evans/repository-dispatch@v3
         with:
-          name: test-report
-          path: reports/test-report.log 
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: run-ci-test 
