@@ -25,8 +25,16 @@ jobs:
       - name: Start MCP server
         run: node mcpServer.js &
 
-      - name: Wait before triggering tests
-        run: sleep 10
+      - name: Wait for MCP server to be ready
+        run: |
+          for i in {1..20}; do
+            if curl -s http://localhost:3000/; then
+              echo "MCP server is up!"
+              break
+            fi
+            echo "Waiting for MCP server..."
+            sleep 1
+          done
 
       - name: Trigger CI Test Workflow
         uses: peter-evans/repository-dispatch@v3
