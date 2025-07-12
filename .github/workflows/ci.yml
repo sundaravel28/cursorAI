@@ -26,7 +26,7 @@ jobs:
         run: chmod +x ./node_modules/.bin/jest
 
       - name: Start MCP server
-        run: node mcpServer.js &
+        run: node mcpServer.js
 
       - name: Wait for MCP server to start
         run: sleep 10
