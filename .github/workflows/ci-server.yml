@@ -1,0 +1,35 @@
+name: CI Server Only
+
+on:
+  workflow_dispatch:
+
+jobs:
+  start-server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fix Jest permissions
+        run: chmod +x ./node_modules/.bin/jest
+
+      - name: Start MCP server
+        run: node mcpServer.js &
+
+      - name: Wait before triggering tests
+        run: sleep 10
+
+      - name: Trigger CI Test Workflow
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: run-ci-test 

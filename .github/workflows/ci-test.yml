@@ -1,0 +1,33 @@
+name: CI Test Only
+
+on:
+  repository_dispatch:
+    types: [run-ci-test]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fix Jest permissions
+        run: chmod +x ./node_modules/.bin/jest
+
+      - name: Run tests
+        run: npm test
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: reports/test-report.log 
