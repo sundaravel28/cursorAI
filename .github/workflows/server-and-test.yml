@@ -1,0 +1,46 @@
+name: Server & Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  server-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fix Jest permissions
+        run: chmod +x ./node_modules/.bin/jest
+
+      - name: Start MCP server
+        run: node mcpServer.js &
+
+      - name: Wait for MCP server to be ready
+        run: |
+          for i in {1..20}; do
+            if curl -s http://localhost:3000/; then
+              echo "MCP server is up!"
+              break
+            fi
+            echo "Waiting for MCP server..."
+            sleep 1
+          done
+
+      - name: Run tests
+        run: npm test
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: reports/test-report.log 
