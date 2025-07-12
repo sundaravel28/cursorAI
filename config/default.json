@@ -1,0 +1,10 @@
+{
+  "env": "local",
+  "mcpUrl": "http://localhost:3000",
+  "saucedemo": {
+    "baseUrl": "https://www.saucedemo.com/",
+    "username": "standard_user",
+    "password": "secret_sauce"
+  },
+  "screenshotPath": "inventory_screenshot.png"
+} 
