@@ -15,7 +15,8 @@ app.post('/start', async (req, res) => {
     page = await context.newPage();
     res.json({ status: 'Browser started' });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('Error in /start:', err); // Detailed error logging
+    res.status(500).json({ error: err.message, stack: err.stack });
   }
 });
 
