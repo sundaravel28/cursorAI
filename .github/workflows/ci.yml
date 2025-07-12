@@ -22,17 +22,25 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run MCP server in background
-        run: nohup node mcpServer.js &
+      - name: Build Docker image
+        run: docker build -t mcp-automation .
+
+      - name: Run MCP server in Docker
+        run: docker run -d -p 3000:3000 --name mcp-server mcp-automation
 
       - name: Wait for MCP server to start
         run: sleep 5
 
-      - name: Run tests
-        run: node tests/loginAndInventoryTest.js
+      - name: Run tests inside Docker container
+        run: docker exec mcp-server npm test
 
       - name: Upload test report
         uses: actions/upload-artifact@v4
         with:
           name: test-report
-          path: reports/test-report.log 
+          path: reports/test-report.log
+
+      - name: Stop and remove Docker container
+        run: |
+          docker stop mcp-server
+          docker rm mcp-server 
