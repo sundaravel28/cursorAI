@@ -25,11 +25,11 @@ jobs:
       - name: Build Docker image
         run: docker build -t mcp-automation .
 
-      - name: Run MCP server in Docker
-        run: docker run -d -p 3000:3000 --name mcp-server mcp-automation
+      - name: Start MCP server
+        run: node mcpServer.js &
 
       - name: Wait for MCP server to start
-        run: sleep 5
+        run: sleep 10
 
       - name: Run tests inside Docker container
         run: docker exec mcp-server npm test
