@@ -28,9 +28,6 @@ jobs:
       - name: Start MCP server
         run: node mcpServer.js
 
-      - name: Wait for MCP server to start
-        run: sleep 10
-
       - name: Run tests
         run: npm test
 
