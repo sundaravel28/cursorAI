@@ -40,4 +40,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.PAT_TOKEN }}
-          event-type: run-ci-test 
+          event-type: run-ci-test
+          repository: sundaravel28/cursorAI
+          client-payload: '{}' 
