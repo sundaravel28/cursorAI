@@ -7,6 +7,8 @@ WORKDIR /app
 # Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
+# Install Playwright browsers and dependencies
+RUN npx playwright install --with-deps
 
 # Copy the rest of the project files
 COPY . .

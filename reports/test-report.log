@@ -8,3 +8,14 @@ Status: PASS
 Screenshot: inventory_screenshot.png
 Timestamp: 2025-07-12T07:09:37.286Z
 -----------------------------
+Test: Login and Inventory Screenshot Test
+Status: FAIL
+Message: AggregateError
+Screenshot: inventory_screenshot.png
+Timestamp: 2025-07-12T11:13:03.058Z
+-----------------------------
+Test: Login and Inventory Screenshot Test
+Status: PASS
+Screenshot: inventory_screenshot.png
+Timestamp: 2025-07-12T11:15:52.897Z
+-----------------------------
